@@ -2,10 +2,21 @@ package main
 
 import (
 	_ "beeblog/routers"
+
+	"beeblog/controllers"
+	"beeblog/models"
+
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/orm"
 )
 
-func main() {
-	beego.Run()
+func init() {
+	models.RegisterDB()
 }
 
+func main() {
+	orm.Debug = true
+	orm.RunSyncdb("default", false, true)
+	beego.Router("/login", &controllers.LoginController{})
+	beego.Run()
+}
